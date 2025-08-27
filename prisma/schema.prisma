@@ -1,0 +1,87 @@
+
+generator client {
+  provider = "prisma-client-js"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        String    @id @default(uuid())
+  email     String    @unique
+  password  String
+  name      String?
+  type      UserType  @default(CLIENT) // CLIENT or PROVIDER
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  bookings  Booking[] @relation("ClientBookings")
+  providedBookings Booking[] @relation("ProviderBookings")
+  services  Service[] @relation("ProviderServices") // For providers to list their services
+  reviews   Review[]  @relation("UserReviews")
+  authToken AuthToken[]
+}
+
+model Service {
+  id          String    @id @default(uuid())
+  name        String    @unique
+  description String?
+  price       Float
+  providerId  String
+  provider    User      @relation("ProviderServices", fields: [providerId], references: [id])
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  bookings    Booking[]
+}
+
+model Booking {
+  id          String    @id @default(uuid())
+  clientId    String
+  client      User      @relation("ClientBookings", fields: [clientId], references: [id])
+  serviceId   String
+  service     Service   @relation(fields: [serviceId], references: [id])
+  providerId  String
+  provider    User      @relation("ProviderBookings", fields: [providerId], references: [id])
+  bookingDate DateTime
+  status      BookingStatus @default(PENDING)
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  review      Review?
+}
+
+model Review {
+  id        String   @id @default(uuid())
+  bookingId String   @unique
+  booking   Booking  @relation(fields: [bookingId], references: [id])
+  clientId  String
+  client    User     @relation("UserReviews", fields: [clientId], references: [id])
+  rating    Int
+  comment   String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model AuthToken {
+  id        String   @id @default(uuid())
+  token     String   @unique
+  userId    String
+  user      User     @relation(fields: [userId], references: [id])
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+}
+
+enum UserType {
+  CLIENT
+  PROVIDER
+  ADMIN
+}
+
+enum BookingStatus {
+  PENDING
+  ACCEPTED
+  REJECTED
+  COMPLETED
+  CANCELLED
+}
