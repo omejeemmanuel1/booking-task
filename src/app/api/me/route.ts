@@ -25,6 +25,8 @@ import { verifyToken } from '@/lib/auth';
  *       500:
  *         description: Internal server error.
  */
+export const dynamic = 'force-dynamic'; 
+
 export async function GET(request: NextRequest) {
   try {
     const user = await verifyToken(request);

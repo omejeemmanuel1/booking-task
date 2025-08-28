@@ -61,7 +61,7 @@ export async function PATCH(
       return NextResponse.json({ message: 'Unauthorized' }, { status: 401 });
     }
 
-    const { id } = await params;
+    const { id } = params;
     const { status } = await request.json();
 
     if (!status) {

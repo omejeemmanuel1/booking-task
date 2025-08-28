@@ -16,7 +16,7 @@ This project implements a simplified backend for a booking application using Nex
 1. **Clone the repository**:
 
     ```bash
-    git clone <your-repo-url>
+    git clone https://github.com/omejeemmanuel1/booking-task.git
     cd booking-app
     ```
 
@@ -33,6 +33,7 @@ This project implements a simplified backend for a booking application using Nex
     ```
     DATABASE_URL="postgresql://user:password@localhost:5432/bookingdb?schema=public"
     JWT_SECRET="your_jwt_secret_here"
+    NEXTAUTH_SECRET="your_auth"
     ```
 
     - Replace `user`, `password`, `localhost:5432`, and `bookingdb` with your PostgreSQL database credentials.
