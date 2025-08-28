@@ -57,4 +57,4 @@ This project implements a simplified backend for a booking application using Nex
 
 ## API Endpoints (Swagger Documentation)
 
-[Hosted Swagger UI Link](http://localhost:3000/api-doc)
+[Hosted Swagger UI Link](https://booking-task-gray.vercel.app/api-doc)
